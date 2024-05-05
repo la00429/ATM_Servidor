@@ -16,13 +16,13 @@ import co.edu.uptc.view.View;
 
 // TODO: Auto-generated Javadoc
 /**
- * Clase Presenter que actúa como controlador en el patrón MVC. Se encarga de manejar la lógica de negocio
- * y la interacción entre la vista y el modelo.
+ * Clase Presenter que actï¿½a como controlador en el patrï¿½n MVC. Se encarga de manejar la lï¿½gica de negocio
+ * y la interacciï¿½n entre la vista y el modelo.
  */
 public class Presenter extends MouseAdapter implements ActionListener, Contracts.IPresenter {
-	
+
 	/** The view. */
-	private View view;
+//	private View view;
 	
 	/** The s principal. */
 	private SystemPrincipal sPrincipal;
@@ -153,14 +153,14 @@ public class Presenter extends MouseAdapter implements ActionListener, Contracts
 	}
 
 	/**
-	 * Navegación entre el panel login y el de creación de usuario.
+	 * Navegaciï¿½n entre el panel login y el de creaciï¿½n de usuario.
 	 */
 	public void changeToCreateUser() {
 		view.accessCreate();
 	}
 
 	/**
-	 * Actualiza el cambio de contraseña.
+	 * Actualiza el cambio de contraseï¿½a.
 	 */
 	public void updatePanelChangePasswaord() {
 		String codeUser = view.getFrameApp().getChangePassword().getUserInput();
@@ -275,7 +275,7 @@ public class Presenter extends MouseAdapter implements ActionListener, Contracts
 	}
 
 	/**
-	 * método para navegar en la creación de usuario.
+	 * mï¿½todo para navegar en la creaciï¿½n de usuario.
 	 */
 	public void createUserData() {
 		String name = view.getFrameApp().getCreateUser().getName();
@@ -313,14 +313,14 @@ public class Presenter extends MouseAdapter implements ActionListener, Contracts
 	}
 
 	/**
-	 * Realiza la acción para olvido de contraseña.
+	 * Realiza la acciï¿½n para olvido de contraseï¿½a.
 	 */
 	public void forgotPassword() {
 		view.accessChange();
 	}
 
 	/**
-	 * Realiza la verificación del inicio de sesión.
+	 * Realiza la verificaciï¿½n del inicio de sesiï¿½n.
 	 */
 	public void verificationLogin() {
 		String codeUser = view.getFrameApp().getLoginUser().getUserInput();
@@ -380,7 +380,7 @@ public class Presenter extends MouseAdapter implements ActionListener, Contracts
 	}
 
 	/**
-	 * Método para mostrar mensajes dentro de los JDialogs.
+	 * Mï¿½todo para mostrar mensajes dentro de los JDialogs.
 	 *
 	 * @param message el mensaje qu quiero que se muestre.
 	 */
