@@ -1,0 +1,53 @@
+{
+	"users": [
+		{
+			"code": "",
+			"name": "",
+			"gender": "Elige uno",
+			"password": "",
+			"styleLearning": "Adaptador"
+		},
+		{
+			"code": "1",
+			"name": "John Doe",
+			"gender": "male",
+			"password": "l8",
+			"styleLearning": "Asimilador"
+		},
+		{
+			"code": "2",
+			"name": "Laura",
+			"gender": "Mujer",
+			"password": "a",
+			"styleLearning": "Asimilador"
+		},
+		{
+			"code": "14",
+			"name": "Laura",
+			"gender": "Mujer",
+			"password": "a",
+			"styleLearning": "Adaptador"
+		},
+		{
+			"code": "1323",
+			"name": "Laura",
+			"gender": "Mujer",
+			"password": "Laura",
+			"styleLearning": "Adaptador"
+		},
+		{
+			"code": "202113327",
+			"name": "David",
+			"gender": "Hombre",
+			"password": "David2003.",
+			"styleLearning": "Divergente"
+		},
+		{
+			"code": "202114933",
+			"name": "Luara",
+			"gender": "Mujer",
+			"password": "Laura2004.",
+			"styleLearning": "Adaptador"
+		}
+	]
+}
