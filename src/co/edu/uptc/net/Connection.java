@@ -3,23 +3,20 @@ package co.edu.uptc.net;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Connetion {
-    private final int PUERTO = 1234;
-    private ServerSocket serverSocket;
+public class Connection {
+
     private Socket socket;
     private DataOutputStream output;
     private DataInputStream input;
 
-    public Connetion() throws IOException {
-        this.serverSocket = new ServerSocket(PUERTO);
+    public Connection(Socket socket) throws IOException {
+        this.socket = socket;
     }
 
     public void connect() throws IOException {
         try {
-            socket = serverSocket.accept();
             output = new DataOutputStream(socket.getOutputStream());
             input = new DataInputStream(socket.getInputStream());
         } catch (IOException e) {

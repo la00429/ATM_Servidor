@@ -1,53 +1,57 @@
-{
-	"users": [
-		{
-			"code": "",
-			"name": "",
-			"gender": "Elige uno",
-			"password": "",
-			"styleLearning": "Adaptador"
-		},
-		{
-			"code": "1",
-			"name": "John Doe",
-			"gender": "male",
-			"password": "l8",
-			"styleLearning": "Asimilador"
-		},
-		{
-			"code": "2",
-			"name": "Laura",
-			"gender": "Mujer",
-			"password": "a",
-			"styleLearning": "Asimilador"
-		},
-		{
-			"code": "14",
-			"name": "Laura",
-			"gender": "Mujer",
-			"password": "a",
-			"styleLearning": "Adaptador"
-		},
-		{
-			"code": "1323",
-			"name": "Laura",
-			"gender": "Mujer",
-			"password": "Laura",
-			"styleLearning": "Adaptador"
-		},
-		{
-			"code": "202113327",
-			"name": "David",
-			"gender": "Hombre",
-			"password": "David2003.",
-			"styleLearning": "Divergente"
-		},
-		{
-			"code": "202114933",
-			"name": "Luara",
-			"gender": "Mujer",
-			"password": "Laura2004.",
-			"styleLearning": "Adaptador"
+[
+	{
+		"name": "ADMIN",
+		"gender": "_",
+		"styleLearning": "_",
+		"user": {
+			"code": "ADMIN",
+			"password": "ADMIN",
+			"available": true,
+			"type": "ADMIN"
 		}
-	]
-}
+	},
+	{
+		"name": "Alice",
+		"gender": "Woman",
+		"styleLearning": "Assimilator",
+		"user": {
+			"code": "202114933",
+			"password": "password1",
+			"available": true,
+			"type": "student"
+		}
+	},
+	{
+		"name": "Bob",
+		"gender": "Man",
+		"styleLearning": "Adapter",
+		"user": {
+			"code": "202214955",
+			"password": "password2",
+			"available": true,
+			"type": "student"
+		}
+	},
+	{
+		"name": "Charlie",
+		"gender": "Man",
+		"styleLearning": "Divergent",
+		"user": {
+			"code": "202315066",
+			"password": "password3",
+			"available": true,
+			"type": "student"
+		}
+	},
+	{
+		"name": "Diana",
+		"gender": "Woman",
+		"styleLearning": "Convergent",
+		"user": {
+			"code": "202416077",
+			"password": "password4",
+			"available": true,
+			"type": "student"
+		}
+	}
+]

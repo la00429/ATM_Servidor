@@ -1,140 +1,182 @@
 package co.edu.uptc.model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 
-import co.edu.uptc.presenter.Contracts;
+import co.edu.uptc.structures.AVLTree;
 
-// TODO: Auto-generated Javadoc
-/**
- * Clase que implementa la interfaz IModel y gestiona la lógica del sistema
- * principal. Esta clase contiene métodos para manipular usuarios y cursos en el
- * sistema.
- */
-public class SystemPrincipal implements Contracts.IModel {
 
-	/** The courses. */
-	private ArrayList<Course> courses; // Lista de cursos en el sistema
-	
-	/** The users. */
-	private HashMap<String, User> users; // Mapa de usuarios en el sistema
+public class SystemPrincipal  {
 
-	/**
-	 * Constructor de la clase SystemPrincipal. Inicializa las listas de cursos y
-	 * usuarios al crear una instancia de esta clase.
-	 */
+	private AVLTree<Course> courses;
+	private AVLTree<Student> students;
+
 	public SystemPrincipal() {
-		courses = new ArrayList<Course>();
-		users = new HashMap<String, User>();
-	}
-
-	/**
-	 * Muestra información de un usuario basado en su código.
-	 *
-	 * @param codeUser El código del usuario.
-	 * @return El objeto que representa al usuario.
-	 */
-	public User showUser(String codeUser) {
-		return getUsers().get(codeUser);
+		this.students = new AVLTree<>(Comparator.comparing(student->student.getUser().getCode()));
+		this.courses = new AVLTree<>(Comparator.comparing(Course::getName));
 
 	}
 
-	/**
-	 * Agrega un nuevo curso.
-	 *
-	 * @param infoCourse La información del curso a agregar.
-	 */
-	public void addCourse(String infoCourse) {
-		String[] info = infoCourse.split("_");
-		Course course = new Course(info[0], info[1]);
-		courses.add(course);
+	public synchronized boolean loginStudent(String code, String password) {
+		boolean verification = false;
+		Iterable<Student> students = this.students.inOrder();
+		for (Student student : students) {
+			verification = verificationLogin(student, code, password);
+		}
+		return verification;
 	}
 
-	/**
-	 * Agrega un nuevo usuario.
-	 *
-	 * @param code          El código del usuario.
-	 * @param name          El nombre del usuario.
-	 * @param gender        El género del usuario.
-	 * @param password      La contraseña del usuario.
-	 * @param styleLearning El estilo de aprendizaje del usuario.
-	 */
-	public void addUser(String code, String name, String gender, String password, String styleLearning) {
-		User user = new User(code, name, gender, password, styleLearning);
-		users.put(code, user);
-	}
-
-	/**
-	 * Verifica la existencia de un usuario basado en su código y contraseña.
-	 *
-	 * @param code     El código del usuario.
-	 * @param password La contraseña del usuario.
-	 * @return Verdadero si el usuario existe, falso en caso contrario.
-	 */
-	public Boolean verificationUser(String code, String password) {
-		Boolean verification = false;
-		for (String codeUser : users.keySet()) {
-			if (codeUser.equals(code)) {
-				if (users.get(code).getPassword().equals(password)) {
-					verification = true;
-				}
+	private synchronized boolean verificationLogin(Student student, String code, String password) {
+		boolean verification = false;
+		int count = 0;
+		if (count ==0 && student.getUser().isAvailable()) {
+			if (student.getUser().getCode().equals(code) && student.getUser().getPassword().equals(password)) {
+				verification = true;
+				count++;
 			}
 		}
 		return verification;
 	}
 
-	/**
-	 * Selecciona un curso basado en su nombre.
-	 *
-	 * @param nameCourse El nombre del curso.
-	 * @return El curso seleccionado.
-	 */
-	public String selectCourse(String nameCourse) {
-		String courseSelect = new String();
-		for (Course course : courses) {
-			if (course.getName().equals(nameCourse)) {
-				courseSelect = course.getInfo();
+	public synchronized boolean loginAdmin(String code, String password) {
+		boolean verification = false;
+		int count = 0;
+		Iterable<Student> students = this.students.inOrder();
+		for (Student student : students) {
+			verification = verificationLogin(student, code, password);
+		}
+		return verification;
+	}
+
+
+	public synchronized boolean addStudent(Student student) {
+		boolean verification = false;
+		if (students.searchData(student) == null) {
+			students.insert(student);
+			verification = true;
+		}
+		return true;
+	}
+
+	public synchronized boolean changePassword(String codeUser, String passwordNew) {
+		boolean verification = false;
+		Iterable<Student> students = this.students.inOrder();
+		while (students.iterator().hasNext()) {
+			Student student = students.iterator().next();
+			if (student.getUser().getCode().equals(codeUser)) {
+				student.getUser().setPassword(passwordNew);
+				verification = true;
 			}
 		}
-		return courseSelect;
+		return verification;
 	}
 
-	/**
-	 * Cambia la contraseña de un usuario.
-	 *
-	 * @param codeUser    El código del usuario.
-	 * @param passwordNew La nueva contraseña del usuario.
-	 */
-	public void changePassword(String codeUser, String passwordNew) {
-		getUsers().get(codeUser).setPassword(passwordNew);
+
+	public synchronized String searchCourse(String courseName){
+		String courseFound = new String();
+		Iterable<Course> courses = this.courses.inOrder();
+		while (courses.iterator().hasNext()) {
+			Course course = courses.iterator().next();
+			if (course.getName().equals(courseName)) {
+				courseFound = course.getInformation();
+			}
+		}
+		return courseFound;
 	}
 
-	/**
-	 * Devuelve el arrayList de los cursos.
-	 *
-	 * @return arrayList
-	 */
-	public ArrayList<Course> getCourses() {
-		return courses;
+
+
+	public synchronized Student showUser(String codeUser) {
+		Student studentFound = new Student();
+		Iterable<Student> students = this.students.inOrder();
+		while (students.iterator().hasNext()) {
+			Student student = students.iterator().next();
+			if (student.getUser().getCode().equals(codeUser)) {
+				studentFound = student;
+			}
+		}
+		return studentFound;
 	}
 
-	/**
-	 * Devuelve el HashMap de Usuarios.
-	 *
-	 * @return un hashMap de Usuarios
-	 */
-	public HashMap<String, User> getUsers() {
-		return users;
+	public synchronized boolean verificationUser(String code) {
+		boolean verification = false;
+		Iterable<Student> students = this.students.inOrder();
+		while (students.iterator().hasNext()) {
+			Student student = students.iterator().next();
+			if (student.getUser().getCode().equals(code)) {
+					verification = true;
+			}
+		}
+		return verification;
 	}
 
-	/**
-	 * Asisgna un hashMap a users. Se usa en el presenter para persisitir los
-	 * usuarios a la clase princiopal de modelo. 
-	 *
-	 * @param users the users
-	 */
-	public void setUsers(HashMap<String, User> users) {
-		this.users = users;
+	public synchronized boolean blockUser(String codeUser) {
+		boolean verification = false;
+		Iterable<Student> students = this.students.inOrder();
+		while (students.iterator().hasNext()) {
+			Student student = students.iterator().next();
+			if (student.getUser().getCode().equals(codeUser)) {
+				student.getUser().setAvailable(false);
+				verification = true;
+			}
+		}
+		return verification;
 	}
 
+	public synchronized boolean unblockUser(String codeUser) {
+		boolean verification = false;
+		Iterable<Student> students = this.students.inOrder();
+		while (students.iterator().hasNext()) {
+			Student student = students.iterator().next();
+			if (student.getUser().getCode().equals(codeUser)) {
+				student.getUser().setAvailable(true);
+				verification = true;
+			}
+		}
+		return verification;
+	}
+
+	public synchronized boolean blockCourse(String courseName) {
+		boolean verification = false;
+		Iterable<Course> courses = this.courses.inOrder();
+		while (courses.iterator().hasNext()) {
+			Course course = courses.iterator().next();
+			if (course.getName().equals(courseName)) {
+				course.setAvailable(false);
+				verification = true;
+			}
+		}
+		return verification;
+	}
+
+	public synchronized boolean unblockCourse(String courseName) {
+		boolean verification = false;
+		Iterable<Course> courses = this.courses.inOrder();
+		while (courses.iterator().hasNext()) {
+			Course course = courses.iterator().next();
+			if (course.getName().equals(courseName)) {
+				course.setAvailable(true);
+				verification = true;
+			}
+		}
+		return verification;
+	}
+
+	public synchronized List<Course> getCourses() {
+		return courses.inOrder();
+	}
+
+	public synchronized List<Student> getStudents() {
+		return students.inOrder();
+	}
+
+	public synchronized void setCourses(AVLTree<Course> courses) {
+		this.courses = courses;
+	}
+
+	public synchronized void setStudents(AVLTree<Student> students) {
+		this.students = students;
+	}
 }

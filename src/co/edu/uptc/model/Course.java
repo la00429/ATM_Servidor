@@ -1,61 +1,39 @@
 package co.edu.uptc.model;
 
-// TODO: Auto-generated Javadoc
-/**
- * Clase que representa un curso con un nombre y su información asociada.
- */
 public class Course {
 
-	/** The name. */
-	private String name; // Nombre del curso
-	
-	/** The info. */
-	private String info; // Información del curso
+	private String name;
+	private String information;
+	private boolean available;
 
-	/**
-	 * Constructor de la clase Course.
-	 *
-	 * @param name Nombre del curso.
-	 * @param info Información asociada al curso.
-	 */
-	public Course(String name, String info) {
+
+	public Course(String name, String information) {
 		this.name = name;
-		this.info = info;
+		this.information = information;
+		this.available = true;
 	}
 
-	/**
-	 * Obtiene el nombre del curso.
-	 *
-	 * @return El nombre del curso.
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * Establece el nombre del curso.
-	 *
-	 * @param name El nombre a establecer para el curso.
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * Obtiene la información asociada al curso.
-	 *
-	 * @return La información del curso.
-	 */
-	public String getInfo() {
-		return info;
+	public String getInformation() {
+		return information;
 	}
 
-	/**
-	 * Establece la información asociada al curso.
-	 *
-	 * @param info La información a establecer para el curso.
-	 */
-	public void setInfo(String info) {
-		this.info = info;
+	public void setInformation(String information) {
+		this.information = information;
+	}
+
+	public Boolean getAvailable() {
+		return available;
+	}
+
+	public void setAvailable(Boolean available) {
+		this.available = available;
 	}
 }
