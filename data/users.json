@@ -4,7 +4,7 @@
 		"gender": "_",
 		"styleLearning": "_",
 		"user": {
-			"code": "ADMIN",
+			"code": "0",
 			"password": "ADMIN",
 			"available": true,
 			"type": "ADMIN"
