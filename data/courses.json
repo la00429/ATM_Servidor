@@ -1,22 +1,22 @@
 [
     {
-      "nombre": "Asimilador",
-      "informacion": "<h2>Curso de Estilo de Aprendizaje: Asimilador</h2><p>Este curso se centra en ayudar a los estudiantes a comprender y organizar la información de manera efectiva. Se cubren temas como la síntesis de ideas abstractas y la aplicación de conceptos teóricos a situaciones prácticas.</p>",
+      "name": "Asimilador",
+      "information": "<h2>Curso de Estilo de Aprendizaje: Asimilador</h2><p>Este curso se centra en ayudar a los estudiantes a comprender y organizar la información de manera efectiva. Se cubren temas como la síntesis de ideas abstractas y la aplicación de conceptos teóricos a situaciones prácticas.</p>",
       "available": true
     },
     {
-      "nombre": "Adaptador",
-      "informacion": "<h2>Curso de Estilo de Aprendizaje: Adaptador</h2><p>En este curso, los estudiantes aprenden a adaptarse a diferentes entornos de aprendizaje y a utilizar la experiencia práctica como herramienta de aprendizaje. Se exploran estrategias para experimentar y aprender de manera activa.</p>",
+      "name": "Adaptador",
+      "information": "<h2>Curso de Estilo de Aprendizaje: Adaptador</h2><p>En este curso, los estudiantes aprenden a adaptarse a diferentes entornos de aprendizaje y a utilizar la experiencia práctica como herramienta de aprendizaje. Se exploran estrategias para experimentar y aprender de manera activa.</p>",
       "available": true
     },
     {
-      "nombre": "Divergente",
-      "informacion": "<h2>Curso de Estilo de Aprendizaje: Divergente</h2><p>El curso de Estilo de Aprendizaje Divergente fomenta la creatividad y la exploración de diversas perspectivas. Los estudiantes participan en actividades que estimulan su imaginación y les ayudan a pensar de manera innovadora.</p>",
+      "name": "Divergente",
+      "information": "<h2>Curso de Estilo de Aprendizaje: Divergente</h2><p>El curso de Estilo de Aprendizaje Divergente fomenta la creatividad y la exploración de diversas perspectivas. Los estudiantes participan en actividades que estimulan su imaginación y les ayudan a pensar de manera innovadora.</p>",
       "available": true
     },
     {
-      "nombre": "Convergente",
-      "informacion": "<h2>Curso de Estilo de Aprendizaje: Convergente</h2><p>En este curso, los estudiantes desarrollan habilidades analíticas y de resolución de problemas. Se enfoca en la aplicación práctica de conceptos teóricos y en la toma de decisiones basada en la información disponible.</p>",
+      "name": "Convergente",
+      "information": "<h2>Curso de Estilo de Aprendizaje: Convergente</h2><p>En este curso, los estudiantes desarrollan habilidades analíticas y de resolución de problemas. Se enfoca en la aplicación práctica de conceptos teóricos y en la toma de decisiones basada en la información disponible.</p>",
       "available": true
     }
 ]

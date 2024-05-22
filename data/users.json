@@ -15,8 +15,8 @@
 		"gender": "Woman",
 		"styleLearning": "Assimilator",
 		"user": {
-			"code": "202114933",
-			"password": "password1",
+			"code": "1",
+			"password": "1",
 			"available": true,
 			"type": "student"
 		}

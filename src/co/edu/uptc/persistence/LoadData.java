@@ -60,18 +60,7 @@ public class LoadData {
 		return tree;
 	}
 
-	public void writeCourseAVLTreeToJson(AVLTree<Course> tree, String filename) {
-		try (FileWriter writer = new FileWriter(filename)) {
-			Gson gson = new Gson();
-			List<Course> courses = tree.inOrder();
-			gson.toJson(courses, writer);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public AVLTree<Course> readCourseAVLTreeFromJson(String filename, Comparator<Course> comparator) {
-		System.out.println(comparator);
 		AVLTree<Course> tree = new AVLTree<>(comparator);
 		try (FileReader reader = new FileReader(filename)) {
 			Gson gson = new Gson();

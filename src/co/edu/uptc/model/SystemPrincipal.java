@@ -23,18 +23,19 @@ public class SystemPrincipal  {
 		boolean verification = false;
 		Iterable<Student> students = this.students.inOrder();
 		for (Student student : students) {
-			verification = verificationLogin(student, code, password);
+			if (!verification) {
+				verification = verificationLogin(student, code, password);
+			}
 		}
 		return verification;
+
 	}
 
 	private synchronized boolean verificationLogin(Student student, String code, String password) {
 		boolean verification = false;
-		int count = 0;
-		if (count ==0 && student.getUser().isAvailable()) {
+		if (student.getUser().isAvailable()) {
 			if (student.getUser().getCode().equals(code) && student.getUser().getPassword().equals(password)) {
 				verification = true;
-				count++;
 			}
 		}
 		return verification;
@@ -42,7 +43,6 @@ public class SystemPrincipal  {
 
 	public synchronized boolean loginAdmin(String code, String password) {
 		boolean verification = false;
-		int count = 0;
 		Iterable<Student> students = this.students.inOrder();
 		for (Student student : students) {
 			verification = verificationLogin(student, code, password);
@@ -77,8 +77,7 @@ public class SystemPrincipal  {
 	public synchronized String searchCourse(String courseName){
 		String courseFound = new String();
 		Iterable<Course> courses = this.courses.inOrder();
-		while (courses.iterator().hasNext()) {
-			Course course = courses.iterator().next();
+		for (Course course : courses) {
 			if (course.getName().equals(courseName)) {
 				courseFound = course.getInformation();
 			}
@@ -91,8 +90,7 @@ public class SystemPrincipal  {
 	public synchronized Student showUser(String codeUser) {
 		Student studentFound = new Student();
 		Iterable<Student> students = this.students.inOrder();
-		while (students.iterator().hasNext()) {
-			Student student = students.iterator().next();
+		for (Student student : students) {
 			if (student.getUser().getCode().equals(codeUser)) {
 				studentFound = student;
 			}
