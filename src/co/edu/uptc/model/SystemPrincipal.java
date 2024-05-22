@@ -57,7 +57,7 @@ public class SystemPrincipal  {
 			students.insert(student);
 			verification = true;
 		}
-		return true;
+		return verification;
 	}
 
 	public synchronized boolean changePassword(String codeUser, String passwordNew) {

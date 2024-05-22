@@ -91,7 +91,6 @@ public class ClientThread extends Thread {
                 case "Exist_User":
                     connetion.send(new Gson().toJson(new Responsive(Message.ERROR_NO_FOUND, sPrincipal.verificationUser(request.getCodeUser()))));
                     break;
-
                 case "Change_Password":
                     if (sPrincipal.changePassword(request.getCodeUser(), request.getPasswordUser())) {
                         connetion.send(new Gson().toJson(new Responsive(Message.MESSAGE_CHANGES)));
