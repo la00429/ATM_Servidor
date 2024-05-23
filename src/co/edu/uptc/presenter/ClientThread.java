@@ -33,6 +33,7 @@ public class ClientThread extends Thread {
             menuPrincipal();
         } catch (IOException e) {
             throw new RuntimeException(e);
+
         }
     }
 

@@ -56,6 +56,7 @@ public class SystemPrincipal  {
 		if (students.searchData(student) == null) {
 			students.insert(student);
 			verification = true;
+			System.out.println(verification);
 		}
 		return verification;
 	}
@@ -63,8 +64,7 @@ public class SystemPrincipal  {
 	public synchronized boolean changePassword(String codeUser, String passwordNew) {
 		boolean verification = false;
 		Iterable<Student> students = this.students.inOrder();
-		while (students.iterator().hasNext()) {
-			Student student = students.iterator().next();
+		for (Student student : students) {
 			if (student.getUser().getCode().equals(codeUser)) {
 				student.getUser().setPassword(passwordNew);
 				verification = true;
@@ -101,10 +101,9 @@ public class SystemPrincipal  {
 	public synchronized boolean verificationUser(String code) {
 		boolean verification = false;
 		Iterable<Student> students = this.students.inOrder();
-		while (students.iterator().hasNext()) {
-			Student student = students.iterator().next();
+		for (Student student : students) {
 			if (student.getUser().getCode().equals(code)) {
-					verification = true;
+				verification = true;
 			}
 		}
 		return verification;
