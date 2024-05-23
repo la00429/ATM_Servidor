@@ -57,7 +57,6 @@ public class ClientThread extends Thread {
     }
 
     public void menuPrincipal() throws IOException {
-
         establishConnection();
         Request request;
         do {
@@ -70,7 +69,7 @@ public class ClientThread extends Thread {
                     connetion.send(new Gson().toJson(new Responsive(loadData.readTxt(Message.PATH_GENDER), 2)));
                     break;
                 case "Login":
-                    verificationLogin(request.getCodeUser(), request.getPasswordUser(), request.getTypeUser());
+                    verificationLogin(request.getCodeUser(), request.getPasswordUser());
                     break;
                 case "Show_Name":
                     connetion.send(new Gson().toJson(new Responsive(sPrincipal.showUser(request.getCodeUser()).getName())));
@@ -131,14 +130,7 @@ public class ClientThread extends Thread {
         System.err.println(message.getMessage());
     }
 
-    private void verificationLogin(String codeUser, String passwordUser, String typeUser) throws IOException {
-        switch (typeUser) {
-            case "student":
-                connetion.send(new Gson().toJson(new Responsive(sPrincipal.loginStudent(codeUser, passwordUser))));
-                break;
-            case "ADMIN":
-                connetion.send(new Gson().toJson(new Responsive(sPrincipal.loginAdmin(codeUser, passwordUser))));
-                break;
-        }
+    private void verificationLogin(String codeUser, String passwordUser) throws IOException {
+        connetion.send(new Gson().toJson(new Responsive(sPrincipal.login(codeUser, passwordUser))));
     }
 }

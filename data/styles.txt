@@ -1,4 +1,4 @@
-Asimilador
-Adaptador
-Divergente
-Convergente
+Assimilator
+Adapter
+Divergent
+Convergent

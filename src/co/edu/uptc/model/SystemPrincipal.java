@@ -19,7 +19,7 @@ public class SystemPrincipal  {
 
 	}
 
-	public synchronized boolean loginStudent(String code, String password) {
+	public synchronized boolean login(String code, String password) {
 		boolean verification = false;
 		Iterable<Student> students = this.students.inOrder();
 		for (Student student : students) {
@@ -41,22 +41,11 @@ public class SystemPrincipal  {
 		return verification;
 	}
 
-	public synchronized boolean loginAdmin(String code, String password) {
-		boolean verification = false;
-		Iterable<Student> students = this.students.inOrder();
-		for (Student student : students) {
-			verification = verificationLogin(student, code, password);
-		}
-		return verification;
-	}
-
-
 	public synchronized boolean addStudent(Student student) {
 		boolean verification = false;
 		if (students.searchData(student) == null) {
 			students.insert(student);
 			verification = true;
-			System.out.println(verification);
 		}
 		return verification;
 	}
@@ -79,7 +68,9 @@ public class SystemPrincipal  {
 		Iterable<Course> courses = this.courses.inOrder();
 		for (Course course : courses) {
 			if (course.getName().equals(courseName)) {
-				courseFound = course.getInformation();
+				if (course.getAvailable()) {
+					courseFound = course.getInformation();
+				}
 			}
 		}
 		return courseFound;
