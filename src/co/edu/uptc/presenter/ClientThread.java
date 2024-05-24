@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Comparator;
+import java.util.List;
 
 public class ClientThread extends Thread {
     private Connection connetion;
@@ -62,64 +63,135 @@ public class ClientThread extends Thread {
         do {
             request = new Gson().fromJson(connetion.receive(), Request.class);
             switch (request.getOption()) {
-                case "Load_Styles":
-                    connetion.send(new Gson().toJson(new Responsive(loadData.readTxt(Message.PATH_STYLES), 1)));
+                case "Load_Courses":
+                    loadListData(sPrincipal.coursesNames(), 1);
                     break;
-                case "Gender":
-                    connetion.send(new Gson().toJson(new Responsive(loadData.readTxt(Message.PATH_GENDER), 2)));
+                case "Load_Users":
+                    loadListData(sPrincipal.studentsCodes(), 2);
                     break;
                 case "Login":
                     verificationLogin(request.getCodeUser(), request.getPasswordUser());
                     break;
                 case "Show_Name":
-                    connetion.send(new Gson().toJson(new Responsive(sPrincipal.showUser(request.getCodeUser()).getName())));
+                    showName(request);
                     break;
                 case "Show_Course_CourseName":
-                    connetion.send(new Gson().toJson(new Responsive(sPrincipal.searchCourse(request.getCourseName()))));
+                    showCourseCourseName(request);
                     break;
                 case "Show_Course_CodeUser":
-                    connetion.send(new Gson().toJson(new Responsive(sPrincipal.searchCourse(sPrincipal.showUser(request.getCodeUser()).getStyleLearning()))));
+                    showCourseCodeUser(request);
                     break;
                 case "Add_User":
-                    if (sPrincipal.addStudent(request.getStudent())) {
-                        connetion.send(new Gson().toJson(new Responsive(Message.MESSAGE_SUCCESS, sPrincipal.addStudent(request.getStudent()))));
-                        loadData.writeStudentAVLTreeToJson(sPrincipal.getStudents(), Message.PATH_USERS);
-                    } else {
-                        connetion.send(new Gson().toJson(new Responsive(Message.MESSAGE_NO_SUCCESS)));
-                    }
+                    addUser(request);
                     break;
                 case "Exist_User":
-                    connetion.send(new Gson().toJson(new Responsive(Message.ERROR_NO_FOUND, sPrincipal.verificationUser(request.getCodeUser()))));
+                    exitUser(request);
                     break;
                 case "Change_Password":
-                    if (sPrincipal.changePassword(request.getCodeUser(), request.getPasswordUser())) {
-                        connetion.send(new Gson().toJson(new Responsive(Message.MESSAGE_CHANGES)));
-                        loadData.writeStudentAVLTreeToJson(sPrincipal.getStudents(), Message.PATH_USERS);
-                    } else {
-                        connetion.send(new Gson().toJson(new Responsive(Message.MESSAGE_NO_SUCCESS)));
-                    }
+                    changePassword(request);
                     break;
-                case "Error_Null":
-                    connetion.send(new Gson().toJson(new Responsive(Message.ERROR_NULL)));
+                case "Block_User":
+                    blockUser(request);
                     break;
-                case "Error_No_Found":
-                    connetion.send(new Gson().toJson(new Responsive(Message.ERROR_NO_FOUND)));
+                case "Unblock_User":
+                    unBlockUser(request);
                     break;
-                case "Error_Twin":
-                    connetion.send(new Gson().toJson(new Responsive(Message.ERROR_TWIN, sPrincipal.verificationUser(request.getCodeUser()))));
+                case "Block_Course":
+                    blockCourse(request);
                     break;
-                case "Help":
-                    System.out.println(request.getOption());
-                    connetion.send(new Gson().toJson(new Responsive(Message.HELP)));
-                    break;
-                case "Us":
-                    System.out.println(request.getOption());
-                    connetion.send(new Gson().toJson(new Responsive(Message.ABOUT_US)));
+                case "Unblock_Course":
+                    unBlockCourse(request);
                     break;
                 default:
                     System.err.println("Conexión cerrada");
             }
         } while (true);
+    }
+
+    private void loadListData(List<String> list, int option) throws IOException {
+        connetion.send(new Gson().toJson(new Responsive(list, option)));
+    }
+
+    private void verificationLogin(String codeUser, String passwordUser) throws IOException {
+        connetion.send(new Gson().toJson(new Responsive(sPrincipal.login(codeUser, passwordUser))));
+    }
+
+    private void showName(Request request) throws IOException {
+        connetion.send(new Gson().toJson(new Responsive(sPrincipal.showUser(request.getCodeUser()).getName())));
+    }
+
+    private void showCourseCourseName(Request request) throws IOException {
+        connetion.send(new Gson().toJson(new Responsive(sPrincipal.searchCourse(request.getCourseName()))));
+
+    }
+
+    private void showCourseCodeUser(Request request) throws IOException {
+        connetion.send(new Gson().toJson(new Responsive(sPrincipal.searchCourse(sPrincipal.showUser(request.getCodeUser()).getStyleLearning()))));
+    }
+
+    private void addUser(Request request) throws IOException {
+        boolean verificationAddUser = sPrincipal.addStudent(request.getStudent());
+        if (verificationAddUser) {
+            connetion.send(new Gson().toJson(new Responsive(true)));
+            loadData.writeStudentAVLTreeToJson(sPrincipal.getStudents(), Message.PATH_USERS);
+        } else {
+            connetion.send(new Gson().toJson(new Responsive(false)));
+        }
+    }
+
+
+    private void exitUser(Request request) throws IOException {
+        connetion.send(new Gson().toJson(new Responsive(sPrincipal.verificationUser(request.getCodeUser()))));
+    }
+
+    private void changePassword(Request request) throws IOException {
+        boolean verificationChange = sPrincipal.changePassword(request.getCodeUser(), request.getPasswordUser());
+        if (verificationChange) {
+            connetion.send(new Gson().toJson(new Responsive(true)));
+            loadData.writeStudentAVLTreeToJson(sPrincipal.getStudents(), Message.PATH_USERS);
+        } else {
+            connetion.send(new Gson().toJson(new Responsive(false)));
+        }
+    }
+
+    private void blockUser(Request request) throws IOException {
+        boolean verificationBlockUser = sPrincipal.blockUser(request.getCodeUser());
+        if (verificationBlockUser) {
+            connetion.send(new Gson().toJson(new Responsive(true)));
+            loadData.writeStudentAVLTreeToJson(sPrincipal.getStudents(), Message.PATH_USERS);
+        } else {
+            connetion.send(new Gson().toJson(new Responsive(false)));
+        }
+    }
+
+    private void unBlockUser(Request request) throws IOException {
+        boolean verificationUnblockUser = sPrincipal.unblockUser(request.getCodeUser());
+        if (verificationUnblockUser) {
+            connetion.send(new Gson().toJson(new Responsive(true)));
+            loadData.writeStudentAVLTreeToJson(sPrincipal.getStudents(), Message.PATH_USERS);
+        } else {
+            connetion.send(new Gson().toJson(new Responsive(false)));
+        }
+    }
+
+    private void blockCourse(Request request) throws IOException {
+        boolean verificationBlock = sPrincipal.blockCourse(request.getCourseName());
+        if (verificationBlock) {
+            connetion.send(new Gson().toJson(new Responsive(true)));
+            loadData.writeCourseAVLTreeToJson(sPrincipal.getCourses(), Message.PATH_COURSES);
+        } else {
+            connetion.send(new Gson().toJson(new Responsive(false)));
+        }
+    }
+
+    private void unBlockCourse(Request request) throws IOException {
+        boolean verificationUnblock = sPrincipal.unblockCourse(request.getCourseName());
+        if (verificationUnblock) {
+            connetion.send(new Gson().toJson(new Responsive(true)));
+            loadData.writeCourseAVLTreeToJson(sPrincipal.getCourses(), Message.PATH_COURSES);
+        } else {
+            connetion.send(new Gson().toJson(new Responsive(false)));
+        }
     }
 
     private void establishConnection() throws IOException {
@@ -130,7 +202,5 @@ public class ClientThread extends Thread {
         System.err.println(message.getMessage());
     }
 
-    private void verificationLogin(String codeUser, String passwordUser) throws IOException {
-        connetion.send(new Gson().toJson(new Responsive(sPrincipal.login(codeUser, passwordUser))));
-    }
+
 }

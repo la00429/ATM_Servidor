@@ -74,4 +74,13 @@ public class LoadData {
 		}
 		return tree;
 	}
+
+	public void writeCourseAVLTreeToJson(List<Course> tree, String filename) {
+		try (FileWriter writer = new FileWriter(filename)) {
+			Gson gson = new Gson();
+			gson.toJson(tree, writer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

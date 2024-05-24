@@ -5,8 +5,8 @@ import java.util.List;
 public class Responsive {
     //datos la respuesta del servidor para hacer algo.
     private String message;
-    private List<String> stylesLearning;
-    private List<String> genders;
+    private List<String> courseNames;
+    private List<String> codeStudents;
     private boolean verification;
 
 
@@ -17,12 +17,11 @@ public class Responsive {
     public Responsive(List<String> list, int option) {
         switch (option) {
             case 1:
-                this.stylesLearning = list;
+                this.courseNames = list;
                 break;
             case 2:
-                this.genders = list;
+                this.codeStudents = list;
                 break;
-
         }
     }
 
@@ -39,15 +38,15 @@ public class Responsive {
         return message;
     }
 
-    public List<String> getStylesLearning() {
-        return stylesLearning;
-    }
-
-    public List<String> getGenders() {
-        return genders;
-    }
-
     public boolean getVerification() {
         return verification;
+    }
+
+    public List<String> getCodeStudents() {
+        return codeStudents;
+    }
+
+    public List<String> getCourseNames() {
+        return courseNames;
     }
 }
