@@ -13,29 +13,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class LoadData {
-	public ArrayList<String> readTxt(String path) {
-		ArrayList<String> fileAll = new ArrayList<String>();
-		File file = new File(path);
-		String line;
-		try (FileReader fileReader = new FileReader(file); BufferedReader process = new BufferedReader(fileReader)) {
-
-			while ((line = process.readLine()) != null) {
-				if (!line.isEmpty()) {
-					fileAll.add(line);
-				}
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (EOFException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return fileAll;
-	}
 
 	public void writeStudentAVLTreeToJson(List<Student> tree, String filename) {
+		createResources(filename);
 		try (FileWriter writer = new FileWriter(filename)) {
 			Gson gson = new Gson();
 			gson.toJson(tree, writer);
@@ -45,6 +25,7 @@ public class LoadData {
 	}
 
 	public AVLTree<Student> readStudentAVLTreeFromJson(String filename, Comparator<Student> comparator) {
+		createResources(filename);
 		AVLTree<Student> tree = new AVLTree<>(comparator);
 		try (FileReader reader = new FileReader(filename)) {
 			Gson gson = new Gson();
@@ -52,7 +33,6 @@ public class LoadData {
 			List<Student> students = gson.fromJson(reader, studentListType);
 			for (Student student : students) {
 				tree.insert(student);
-
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -60,7 +40,19 @@ public class LoadData {
 		return tree;
 	}
 
+	public void writeCourseAVLTreeToJson(List<Course> tree, String filename) {
+		createResources(filename);
+		try (FileWriter writer = new FileWriter(filename)) {
+			Gson gson = new Gson();
+			gson.toJson(tree, writer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public AVLTree<Course> readCourseAVLTreeFromJson(String filename, Comparator<Course> comparator) {
+		createResources(filename);
+
 		AVLTree<Course> tree = new AVLTree<>(comparator);
 		try (FileReader reader = new FileReader(filename)) {
 			Gson gson = new Gson();
@@ -75,12 +67,13 @@ public class LoadData {
 		return tree;
 	}
 
-	public void writeCourseAVLTreeToJson(List<Course> tree, String filename) {
-		try (FileWriter writer = new FileWriter(filename)) {
-			Gson gson = new Gson();
-			gson.toJson(tree, writer);
-		} catch (IOException e) {
-			e.printStackTrace();
+
+	private void createResources(String path) {
+		File file = new File(path);
+		File parentDir = file.getParentFile();
+		if (parentDir != null && !parentDir.exists()) {
+			parentDir.mkdirs();
 		}
 	}
+
 }

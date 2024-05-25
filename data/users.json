@@ -17,12 +17,23 @@
     "user": {
       "code": "2021145903",
       "password": "password1",
-      "available": false,
+      "available": true,
       "type": "student"
     }
   },
   {
-    "name": "laura",
+    "name": "Laura",
+    "gender": "Mujer",
+    "styleLearning": "Convergent",
+    "user": {
+      "code": "202114933",
+      "password": "2",
+      "available": true,
+      "type": "student"
+    }
+  },
+  {
+    "name": "Vanesa",
     "gender": "Mujer",
     "styleLearning": "Assimilator",
     "user": {

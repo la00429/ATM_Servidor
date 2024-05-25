@@ -49,4 +49,9 @@ public class Connection {
             throw new IOException("Socket is not connected or is closed");
         }
     }
+
+    public String showIP(){
+        return socket.getInetAddress().getHostAddress();
+    }
+
 }

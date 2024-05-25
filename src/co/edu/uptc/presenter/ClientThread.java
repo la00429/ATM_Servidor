@@ -33,8 +33,7 @@ public class ClientThread extends Thread {
             loadData();
             menuPrincipal();
         } catch (IOException e) {
-            throw new RuntimeException(e);
-
+            System.err.println("Connection closed: " + connetion.showIP());
         }
     }
 
@@ -102,8 +101,8 @@ public class ClientThread extends Thread {
                 case "Unblock_Course":
                     unBlockCourse(request);
                     break;
-                default:
-                    System.err.println("Conexión cerrada");
+                case "Disconnect":
+                    closeConnection();
             }
         } while (true);
     }
@@ -196,11 +195,12 @@ public class ClientThread extends Thread {
 
     private void establishConnection() throws IOException {
         connetion.connect();
-        Gson gson = new Gson();
-        connetion.send(gson.toJson(new Responsive("Connection established")));
-        Responsive message = gson.fromJson(connetion.receive(), Responsive.class);
-        System.err.println(message.getMessage());
+        connetion.send(new Gson().toJson(new Responsive("Connection established with Server")));
+        System.err.println(new Gson().fromJson(connetion.receive(), Responsive.class).getMessage()+": " + connetion.showIP() );
     }
 
-
+    private void closeConnection() throws IOException {
+        connetion.send(new Gson().toJson(new Responsive("Closing Connection")));
+        connetion.disconnect();
+    }
 }
