@@ -16,12 +16,12 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ClientThread extends Thread {
-    private Connection connetion;
+    private Connection connection;
     private SystemPrincipal sPrincipal;
     private LoadData loadData;
 
     public ClientThread(Socket socket, SystemPrincipal sPrincipal, LoadData loadData) throws IOException {
-        this.connetion = new Connection(socket);
+        this.connection = new Connection(socket);
         this.sPrincipal = sPrincipal;
         this.loadData = loadData;
     }
@@ -33,7 +33,7 @@ public class ClientThread extends Thread {
             loadData();
             menuPrincipal();
         } catch (IOException e) {
-            System.err.println("Connection closed: " + connetion.showIP());
+            System.err.println("Connection closed: " + connection.showIP());
         }
     }
 
@@ -60,7 +60,7 @@ public class ClientThread extends Thread {
         establishConnection();
         Request request;
         do {
-            request = new Gson().fromJson(connetion.receive(), Request.class);
+            request = new Gson().fromJson(connection.receive(), Request.class);
             switch (request.getOption()) {
                 case "Load_Courses":
                     loadListData(sPrincipal.coursesNames(), 1);
@@ -79,6 +79,9 @@ public class ClientThread extends Thread {
                     break;
                 case "Show_Course_CodeUser":
                     showCourseCodeUser(request);
+                    break;
+                case "Show_Count_Course":
+                    showCountCourse(request);
                     break;
                 case "Add_User":
                     addUser(request);
@@ -108,99 +111,103 @@ public class ClientThread extends Thread {
     }
 
     private void loadListData(List<String> list, int option) throws IOException {
-        connetion.send(new Gson().toJson(new Responsive(list, option)));
+        connection.send(new Gson().toJson(new Responsive(list, option)));
     }
 
     private void verificationLogin(String codeUser, String passwordUser) throws IOException {
-        connetion.send(new Gson().toJson(new Responsive(sPrincipal.login(codeUser, passwordUser))));
+        connection.send(new Gson().toJson(new Responsive(sPrincipal.login(codeUser, passwordUser))));
     }
 
     private void showName(Request request) throws IOException {
-        connetion.send(new Gson().toJson(new Responsive(sPrincipal.showUser(request.getCodeUser()).getName())));
+        connection.send(new Gson().toJson(new Responsive(sPrincipal.showUser(request.getCodeUser()).getName())));
     }
 
     private void showCourseCourseName(Request request) throws IOException {
-        connetion.send(new Gson().toJson(new Responsive(sPrincipal.searchCourse(request.getCourseName()))));
+        connection.send(new Gson().toJson(new Responsive(sPrincipal.searchCourse(request.getCourseName()))));
 
     }
 
     private void showCourseCodeUser(Request request) throws IOException {
-        connetion.send(new Gson().toJson(new Responsive(sPrincipal.searchCourse(sPrincipal.showUser(request.getCodeUser()).getStyleLearning()))));
+        connection.send(new Gson().toJson(new Responsive(sPrincipal.searchCourse(sPrincipal.showUser(request.getCodeUser()).getStyleLearning()))));
+    }
+
+    private void showCountCourse(Request request)throws IOException {
+        connection.send(new Gson().toJson(new Responsive(String.valueOf(sPrincipal.countStudentsInCourse(request.getCourseName())))));
     }
 
     private void addUser(Request request) throws IOException {
         boolean verificationAddUser = sPrincipal.addStudent(request.getStudent());
         if (verificationAddUser) {
-            connetion.send(new Gson().toJson(new Responsive(true)));
+            connection.send(new Gson().toJson(new Responsive(true)));
             loadData.writeStudentAVLTreeToJson(sPrincipal.getStudents(), Message.PATH_USERS);
         } else {
-            connetion.send(new Gson().toJson(new Responsive(false)));
+            connection.send(new Gson().toJson(new Responsive(false)));
         }
     }
 
 
     private void exitUser(Request request) throws IOException {
-        connetion.send(new Gson().toJson(new Responsive(sPrincipal.verificationUser(request.getCodeUser()))));
+        connection.send(new Gson().toJson(new Responsive(sPrincipal.verificationUser(request.getCodeUser()))));
     }
 
     private void changePassword(Request request) throws IOException {
         boolean verificationChange = sPrincipal.changePassword(request.getCodeUser(), request.getPasswordUser());
         if (verificationChange) {
-            connetion.send(new Gson().toJson(new Responsive(true)));
+            connection.send(new Gson().toJson(new Responsive(true)));
             loadData.writeStudentAVLTreeToJson(sPrincipal.getStudents(), Message.PATH_USERS);
         } else {
-            connetion.send(new Gson().toJson(new Responsive(false)));
+            connection.send(new Gson().toJson(new Responsive(false)));
         }
     }
 
     private void blockUser(Request request) throws IOException {
         boolean verificationBlockUser = sPrincipal.blockUser(request.getCodeUser());
         if (verificationBlockUser) {
-            connetion.send(new Gson().toJson(new Responsive(true)));
+            connection.send(new Gson().toJson(new Responsive(true)));
             loadData.writeStudentAVLTreeToJson(sPrincipal.getStudents(), Message.PATH_USERS);
         } else {
-            connetion.send(new Gson().toJson(new Responsive(false)));
+            connection.send(new Gson().toJson(new Responsive(false)));
         }
     }
 
     private void unBlockUser(Request request) throws IOException {
         boolean verificationUnblockUser = sPrincipal.unblockUser(request.getCodeUser());
         if (verificationUnblockUser) {
-            connetion.send(new Gson().toJson(new Responsive(true)));
+            connection.send(new Gson().toJson(new Responsive(true)));
             loadData.writeStudentAVLTreeToJson(sPrincipal.getStudents(), Message.PATH_USERS);
         } else {
-            connetion.send(new Gson().toJson(new Responsive(false)));
+            connection.send(new Gson().toJson(new Responsive(false)));
         }
     }
 
     private void blockCourse(Request request) throws IOException {
         boolean verificationBlock = sPrincipal.blockCourse(request.getCourseName());
         if (verificationBlock) {
-            connetion.send(new Gson().toJson(new Responsive(true)));
+            connection.send(new Gson().toJson(new Responsive(true)));
             loadData.writeCourseAVLTreeToJson(sPrincipal.getCourses(), Message.PATH_COURSES);
         } else {
-            connetion.send(new Gson().toJson(new Responsive(false)));
+            connection.send(new Gson().toJson(new Responsive(false)));
         }
     }
 
     private void unBlockCourse(Request request) throws IOException {
         boolean verificationUnblock = sPrincipal.unblockCourse(request.getCourseName());
         if (verificationUnblock) {
-            connetion.send(new Gson().toJson(new Responsive(true)));
+            connection.send(new Gson().toJson(new Responsive(true)));
             loadData.writeCourseAVLTreeToJson(sPrincipal.getCourses(), Message.PATH_COURSES);
         } else {
-            connetion.send(new Gson().toJson(new Responsive(false)));
+            connection.send(new Gson().toJson(new Responsive(false)));
         }
     }
 
     private void establishConnection() throws IOException {
-        connetion.connect();
-        connetion.send(new Gson().toJson(new Responsive("Connection established with Server")));
-        System.err.println(new Gson().fromJson(connetion.receive(), Responsive.class).getMessage()+": " + connetion.showIP() );
+        connection.connect();
+        connection.send(new Gson().toJson(new Responsive("Connection established with Server")));
+        System.err.println(new Gson().fromJson(connection.receive(), Responsive.class).getMessage()+": " + connection.showIP() );
     }
 
     private void closeConnection() throws IOException {
-        connetion.send(new Gson().toJson(new Responsive("Closing Connection")));
-        connetion.disconnect();
+        connection.send(new Gson().toJson(new Responsive("Closing Connection")));
+        connection.disconnect();
     }
 }

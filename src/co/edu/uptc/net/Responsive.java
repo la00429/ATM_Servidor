@@ -3,7 +3,6 @@ package co.edu.uptc.net;
 import java.util.List;
 
 public class Responsive {
-    //datos la respuesta del servidor para hacer algo.
     private String message;
     private List<String> courseNames;
     private List<String> codeStudents;

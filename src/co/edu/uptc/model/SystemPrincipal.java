@@ -181,4 +181,16 @@ public class SystemPrincipal  {
 	public synchronized void setStudents(AVLTree<Student> students) {
 		this.students = students;
 	}
+
+	public int countStudentsInCourse(String courseName) {
+		int countStudent = 0;
+		Iterable<Student> students = this.students.inOrder();
+		for (Student student : students) {
+			if (student.getStyleLearning().equals(courseName)) {
+				countStudent++;
+
+			}
+		}
+		return countStudent;
+	}
 }

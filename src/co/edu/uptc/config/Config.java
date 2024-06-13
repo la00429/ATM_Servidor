@@ -9,16 +9,8 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Properties;
 
-// TODO: Auto-generated Javadoc
-/**
- * Clase encargada de cargar mensajes desde un archivo de propiedades y
- * asignarlos a un objeto Message usando reflexión.
- */
 public class Config {
-	/**
-	 * Carga los mensajes desde un archivo de propiedades y los asigna a un objeto
-	 * Message utilizando reflexión para acceder a los campos del objeto.
-	 */
+
 	public void loadMessages() {
 		Message message = new Message();
 		try {
@@ -43,16 +35,6 @@ public class Config {
 
 	}
 
-	/**
-	 * Carga las propiedades desde un archivo de configuración y devuelve un array
-	 * de strings con los mensajes ordenados.
-	 *
-	 * @return Array de strings con los mensajes ordenados.
-	 * @throws FileNotFoundException Si el archivo de configuración no es
-	 *                               encontrado.
-	 * @throws IOException           Si ocurre un error durante la lectura del
-	 *                               archivo.
-	 */
 	private String[] loadProperties() throws FileNotFoundException, IOException {
 		Properties file = new Properties();
 		file.load(new FileReader("config/config.properties"));
@@ -64,12 +46,6 @@ public class Config {
 		return messagesAll;
 	}
 
-	/**
-	 * Devuelve una lista ordenada de las claves (keys) del archivo de propiedades.
-	 *
-	 * @param file El archivo de propiedades del que se extraen las claves.
-	 * @return Lista ordenada de las claves del archivo de propiedades.
-	 */
 	private ArrayList<String> keysOrder(Properties file) {
 		Hashtable<Object, Object> messagesOrder = file;
 		Object[] valores = messagesOrder.keySet().toArray();

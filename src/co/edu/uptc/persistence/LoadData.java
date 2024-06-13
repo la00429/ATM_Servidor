@@ -2,7 +2,6 @@ package co.edu.uptc.persistence;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 

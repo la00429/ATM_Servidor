@@ -3,7 +3,6 @@ package co.edu.uptc.runnable;
 import co.edu.uptc.presenter.Presenter;
 
 import java.io.IOException;
-import java.util.function.Consumer;
 
 public class Run {
 
